@@ -1,0 +1,59 @@
+  WITH main_table       AS -- вылеты из Анапы (зима 2017)
+           (SELECT f.flight_id,
+                   f.flight_no,
+                   f.arrival_airport,
+                   f.aircraft_code,
+                   f.actual_departure,
+                   f.actual_arrival,
+                   EXTRACT(HOUR FROM (f.actual_arrival - f.actual_departure)) * 60 +
+                   EXTRACT(MINUTE FROM (f.actual_arrival - f.actual_departure)) AS flight_time
+              FROM dst_project.flights AS f
+             WHERE departure_airport = 'AAQ'
+               AND (date_trunc('month', scheduled_departure) IN ('2017-01-01', '2017-02-01', '2017-12-01'))
+               AND status NOT IN ('Cancelled')),
+
+       count_seats      AS -- таблица с кол-вом мест в каждом классе
+           (SELECT s.aircraft_code,
+                   count(CASE WHEN s.fare_conditions = 'Economy' THEN s.fare_conditions END)  AS seat_economy,
+                   count(CASE WHEN s.fare_conditions = 'Comfort' THEN s.fare_conditions END)  AS seat_comfort,
+                   count(CASE WHEN s.fare_conditions = 'Business' THEN s.fare_conditions END) AS seat_bisiness,
+                   count(*)                                                                   AS seat_total
+              FROM dst_project.seats AS s
+             GROUP BY 1),
+
+       sold_tickets     AS -- таблица проданных билетов
+           (SELECT tf.flight_id,
+                   count(CASE WHEN tf.fare_conditions = 'Economy' THEN tf.fare_conditions END)  AS sold_economy,
+                   count(CASE WHEN tf.fare_conditions = 'Comfort' THEN tf.fare_conditions END)  AS sold_comfort,
+                   count(CASE WHEN tf.fare_conditions = 'Business' THEN tf.fare_conditions END) AS sold_bisiness,
+                   count(*)                                                                     AS sold_total,
+                   sum(CASE WHEN tf.fare_conditions = 'Economy' THEN tf.amount END)             AS amount_economy,
+                   sum(CASE WHEN tf.fare_conditions = 'Comfort' THEN tf.amount END)             AS amount_comfort,
+                   sum(CASE WHEN tf.fare_conditions = 'Business' THEN tf.amount END)            AS amount_bisiness,
+                   sum(tf.amount)                                                               AS amount_total
+              FROM dst_project.ticket_flights AS tf
+             GROUP BY 1),
+       fuel_consumption AS
+           (SELECT 'Boeing 737-300' AS model,
+                   2400             AS fuel_consum_kg_hr
+             UNION
+            SELECT 'Sukhoi Superjet-100' AS model,
+                   1700                  AS fuel_consum_kg_hr)
+
+SELECT mt.flight_id,
+       mt.flight_no,
+       mt.arrival_airport,
+       ap.city,
+       mt.actual_departure,
+       mt.actual_arrival,
+       mt.flight_time,
+       a.model,
+       fc.fuel_consum_kg_hr,
+       ct.*,
+       st.*
+  FROM main_table AS mt
+           LEFT JOIN dst_project.aircrafts AS a ON mt.aircraft_code = a.aircraft_code
+           LEFT JOIN fuel_consumption AS fc ON fc.model = a.model
+           LEFT JOIN dst_project.airports AS ap ON ap.airport_code = mt.arrival_airport
+           LEFT JOIN count_seats AS ct ON ct.aircraft_code = mt.aircraft_code
+           LEFT JOIN sold_tickets AS st ON st.flight_id = mt.flight_id
