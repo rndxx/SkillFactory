@@ -119,7 +119,7 @@ SELECT f.departure_airport,
  LIMIT 1
 
 -- Задание 4.4.4
--- Сколько составляет средняя дальность полета среди всех самолетов в минутах? 
+-- Сколько составляет средняя дальность полета среди всех самолетов в минутах?
 -- Секунды округляются в меньшую сторону (отбрасываются до минут).
 
 SELECT avg(EXTRACT(HOUR FROM (f.scheduled_arrival - f.scheduled_departure)) * 60 +
@@ -202,7 +202,7 @@ SELECT DISTINCT f.aircraft_code,
                 c.count_seats
   FROM dst_project.flights AS f
            LEFT JOIN count_seats_aircraft AS c ON c.aircraft_code = f.aircraft_code
-  LEFT JOIN dst_project.aircrafts as a ON f.aircraft_code = a.aircraft_code
+           LEFT JOIN dst_project.aircrafts AS a ON f.aircraft_code = a.aircraft_code
  WHERE f.departure_airport = 'AAQ'
 
 -- ТАблица для анализа нерентабильных рейсов Анапы зимой 2017 г.
