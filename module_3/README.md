@@ -3,4 +3,4 @@
 - Cоздать свою первую модель, основанную на алгоритмах машинного обучения.
 - Принять участие в соревновании на kaggle.
 - Понять, как правильно «готовить» данные, чтобы модель работала лучше.
-#### [Kaggle notebook](https://www.kaggle.com/phxphxphx/aleksandr-kravchenko-sf-tripadvisor-rating)
+#### [Профиль Kaggle](https://www.kaggle.com/phxphxphx)
