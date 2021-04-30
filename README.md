@@ -5,5 +5,5 @@
 ### [Проект 3. О вкусной и здоровой пище](https://github.com/phantomroom/SkillFactory/tree/master/module_3)
 ### [Проект 4. Авиарейсы без потерь](https://github.com/phantomroom/SkillFactory/tree/master/module_4)
 ### [Проект 5. Компьютер говорит «Нет»](https://github.com/phantomroom/SkillFactory/tree/master/module_5)
-### [Проект 6. Выбираем авто выгодно](https://github.com/phantomroom/SkillFactory/tree/master/module_6)
+### [Проект 6. Выбираем авто выгодно](https://github.com/phantomroom/SkillFactory/tree/master/module_6) 
 
