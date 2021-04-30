@@ -9,6 +9,10 @@
 ### Цель:
  - добиться лучшего показателя метрики MAPE
 
+### Notebook
+ - [парсинг](https://github.com/randomQQQ/SkillFactory/blob/master/module_6/parsing.ipynb)
+ - [EDA + ml](https://github.com/randomQQQ/SkillFactory/blob/master/module_6/project.ipynb)
+
 
 ### MAPE
  - StackingRegressor (из моделей ниже, кроме RandomForestRegressor,  финальная модель Ridge) - 11.73
